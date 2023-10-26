@@ -27,7 +27,7 @@ public class PlayerInput : MonoBehaviour
      *****/
 
     // Roam Speeds
-    private float MOVESPEED = 8; 
+    private float MOVESPEED = 5; 
 
     // Accelration and Decceleration
     private float ACCEL = 2f;
@@ -85,6 +85,15 @@ public class PlayerInput : MonoBehaviour
         player2D.AddForce(Roamx * Vector2.right);
         player2D.AddForce(Roamy * Vector2.up);
 
+        // Changes character direction
+        if (moveDirection.x > 0)
+        {
+            owner.GetComponent<SpriteRenderer>().flipX = false;
+        }
+        else if (moveDirection.x < 0)
+        {
+            owner.GetComponent<SpriteRenderer>().flipX = true;
+        }
         // Friction
         float frictionx = Mathf.Min(Mathf.Abs(player2D.velocity.x), Mathf.Abs(0.1f));
         frictionx *= Mathf.Sign(player2D.velocity.x);
@@ -100,7 +109,7 @@ public class PlayerInput : MonoBehaviour
         direction.Normalize();
 
         // Set rotation of sword towards mouse pointer
-        angle = Mathf.Atan2(-direction.x, direction.y) * Mathf.Rad2Deg;
+        angle = Mathf.Atan2(-direction.x, direction.y) * Mathf.Rad2Deg + 45;
         GameObject.Find("Sword Center").transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
         // Set Sword Location to Player

@@ -11,7 +11,7 @@ public class Hostile : MonoBehaviour
     private Transform target;   // Player
     private Rigidbody2D enemy;
 
-    private float MOVESPEED = 9;
+    private float MOVESPEED = 6;
     private float ACCEL = 0.25f;
     private float DECEL = 0.10f;
     private Vector2 moveDirection = Vector2.zero;
