@@ -19,15 +19,15 @@ public class PlayerInput : MonoBehaviour
     Vector2 moveDirection = Vector2.zero;
     Vector2 mousePosition = Vector2.zero;
 
+    // Attack Timer
+    private float attackCooldown = 0f;
+    private float attackCooldownLimit = .25f;
     /*****
      * Constants (Changed in editor)
      *****/
 
     // Roam Speeds
-    // private float SLOWSPEED = 5; // Slow
-    private float MOVESPEED = 8; // Nomral (Player Default)
-    // private float FASTSPEED = 12; // Fast
-    // private float BLITZSPEED = 20; // Blitz (Projectile)
+    private float MOVESPEED = 8; 
 
     // Accelration and Decceleration
     private float ACCEL = 2f;
@@ -102,6 +102,17 @@ public class PlayerInput : MonoBehaviour
         // Set rotation of sword towards mouse pointer
         angle = Mathf.Atan2(-direction.x, direction.y) * Mathf.Rad2Deg;
         GameObject.Find("Sword Center").transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+
+        // Set Sword Location to Player
+        GameObject.Find("Sword Center").transform.position = player2D.position;
+
+        // Timer Updates
+        attackCooldown += Time.deltaTime;
+
+        if (attackCooldown > .20f)
+        {
+            attackArea.SetActive(false);
+        }
     }
 
     
@@ -122,10 +133,11 @@ public class PlayerInput : MonoBehaviour
 
     public void Attack(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && attackCooldown > attackCooldownLimit)
         {
             Debug.Log(direction);
-
+            attackArea.SetActive(true);
+            attackCooldown = 0;
             /**
             clip.legacy = true;
 
