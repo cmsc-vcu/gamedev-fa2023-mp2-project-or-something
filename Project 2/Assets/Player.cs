@@ -6,7 +6,7 @@ using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
+using UnityEngine.Animations;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class PlayerInput : MonoBehaviour
@@ -33,6 +33,12 @@ public class PlayerInput : MonoBehaviour
     private float ACCEL = 2f;
     private float DECEL = 3f;
 
+    /** Animated Object
+      public AnimationClip clip;
+      public Animation animation;
+    **/
+    float angle;
+
     /*****
      * Pure Constant (Not changed ever)
      *****/
@@ -42,7 +48,8 @@ public class PlayerInput : MonoBehaviour
     Transform _transform;
     public Rigidbody2D player2D;
     public PlayerInput inputActions;
-    public GameObject debug;
+    public GameObject attackArea;
+    Vector2 direction;
 
     // Starts when script is compiled or something
     void Awake()
@@ -52,6 +59,12 @@ public class PlayerInput : MonoBehaviour
         inputActions = new PlayerInput();
         player2D = GetComponent<Rigidbody2D>();
         GetComponent<HealthSystem>().setAttributes(100, owner);
+        attackArea = GameObject.Find("Sword");
+        attackArea.SetActive(false);
+        /**
+        clip = new AnimationClip();
+        animation = GameObject.Find("Sword Center").GetComponent<Animation>();
+        **/
     }
 
     // Update
@@ -81,8 +94,14 @@ public class PlayerInput : MonoBehaviour
         frictiony *= Mathf.Sign(player2D.velocity.y);
         player2D.AddForce(Vector2.up * -frictiony, ForceMode2D.Impulse);
 
+        // Mouse Point 
         mousePosition = Mouse.current.position.ReadValue();
-        Debug.Log(mousePosition);
+        direction = new Vector2(-1 * (Screen.width / 2 - mousePosition.x - player2D.position.x), -1 * (Screen.height / 2 - mousePosition.y - player2D.position.y));
+        direction.Normalize();
+
+        // Set rotation of sword towards mouse pointer
+        angle = Mathf.Atan2(-direction.x, direction.y) * Mathf.Rad2Deg;
+        GameObject.Find("Sword Center").transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
     
@@ -105,12 +124,24 @@ public class PlayerInput : MonoBehaviour
     {
         if (context.performed)
         {
-            Vector2 direction = new Vector2(-1 * (Screen.width/2 - mousePosition.x - player2D.position.x), -1 * (Screen.height/2 - mousePosition.y - player2D.position.y));
-            direction.Normalize();
             Debug.Log(direction);
 
-            GameObject newEnemy = Instantiate(debug, player2D.position, Quaternion.identity);
-            newEnemy.GetComponent<Rigidbody2D>().velocity = direction * 10;
+            /**
+            clip.legacy = true;
+
+            // Keyframe Array
+            Keyframe[] keys = new Keyframe[2];
+
+            // 0 Seconds, -45 Degrees -> 0.2 Seconds, 45 Degrees. (90 Degrees in .2 seconds)
+            keys[0] = new Keyframe(0.0f, angle-45);
+            keys[1] = new Keyframe(0.2f, angle+45);
+
+            // Initialize and Assign
+            var curve = new AnimationCurve(keys);
+            clip.SetCurve("root/Player Ghost/Sword Center", typeof(Transform), "localRotation.z", curve);
+            animation.AddClip(clip, clip.name);
+            animation.Play(clip.name);
+            **/
         }
     }
 }
