@@ -122,7 +122,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.45
 --- !u!50 &2346833773372666132
 Rigidbody2D:
   serializedVersion: 4
@@ -162,6 +162,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49465172fa2d3184f8b85a069a2f808a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  run:
+  - {fileID: -140220566, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
+  - {fileID: 1611109861, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
+  - {fileID: 1488126946, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
+  - {fileID: 613658156, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
+  index: 0
 --- !u!114 &5512911369539422090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,3 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36533e52d67ee9f41b9c57e3e0dfb002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item: {fileID: 6805693962154018795, guid: 8b6ea6ab6028fac458d5f5919423235e, type: 3}
+  mobHit: {fileID: -392852972, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
+  mobNormal: {fileID: 613658156, guid: 1bc6097228993f045852159e71f81d5b, type: 3}
+  textHealth: {fileID: 0}

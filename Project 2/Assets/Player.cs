@@ -19,9 +19,13 @@ public class PlayerInput : MonoBehaviour
     Vector2 moveDirection = Vector2.zero;
     Vector2 mousePosition = Vector2.zero;
 
-    // Attack Timer
+    // Timers
     private float attackCooldown = 0f;
     private float attackCooldownLimit = .25f;
+
+    private float animTick = 0f;
+    private float animTickLimit = .05f;
+
     /*****
      * Constants (Changed in editor)
      *****/
@@ -38,6 +42,7 @@ public class PlayerInput : MonoBehaviour
       public Animation animation;
     **/
     float angle;
+    public int index;
 
     /*****
      * Pure Constant (Not changed ever)
@@ -50,6 +55,9 @@ public class PlayerInput : MonoBehaviour
     public PlayerInput inputActions;
     public GameObject attackArea;
     Vector2 direction;
+
+    public Sprite[] run;
+    public Sprite stand;
 
     // Starts when script is compiled or something
     void Awake()
@@ -85,7 +93,7 @@ public class PlayerInput : MonoBehaviour
         player2D.AddForce(Roamx * Vector2.right);
         player2D.AddForce(Roamy * Vector2.up);
 
-        // Changes character direction
+        // Changes character direction and 'animates'
         if (moveDirection.x > 0)
         {
             owner.GetComponent<SpriteRenderer>().flipX = false;
@@ -94,6 +102,23 @@ public class PlayerInput : MonoBehaviour
         {
             owner.GetComponent<SpriteRenderer>().flipX = true;
         }
+
+        animTick += Time.deltaTime;
+        if (animTick > animTickLimit && (moveDirection.x != 0 || moveDirection.y != 0))
+        {
+            animTick = 0f;
+            owner.GetComponent<SpriteRenderer>().sprite = run[index++];
+        }
+        else if (moveDirection.x == 0 && moveDirection.y == 0)
+        {
+            owner.GetComponent<SpriteRenderer>().sprite = stand;
+        }
+
+        if (index > 5) 
+        {
+            index = 0;
+        }
+
         // Friction
         float frictionx = Mathf.Min(Mathf.Abs(player2D.velocity.x), Mathf.Abs(0.1f));
         frictionx *= Mathf.Sign(player2D.velocity.x);
@@ -118,13 +143,11 @@ public class PlayerInput : MonoBehaviour
         // Timer Updates
         attackCooldown += Time.deltaTime;
 
-        if (attackCooldown > .20f)
+        if (attackCooldown > .25f)
         {
             attackArea.SetActive(false);
         }
     }
-
-    
 
     /***********
     * Roam Mode
@@ -144,7 +167,6 @@ public class PlayerInput : MonoBehaviour
     {
         if (context.performed && attackCooldown > attackCooldownLimit)
         {
-            Debug.Log(direction);
             attackArea.SetActive(true);
             attackCooldown = 0;
             /**

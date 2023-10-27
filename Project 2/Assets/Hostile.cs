@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class Hostile : MonoBehaviour
@@ -10,11 +11,16 @@ public class Hostile : MonoBehaviour
     Transform _transform;
     private Transform target;   // Player
     private Rigidbody2D enemy;
+    public Sprite[] run;
+    public int index = 0;
 
     private float MOVESPEED = 6;
     private float ACCEL = 0.25f;
     private float DECEL = 0.10f;
     private Vector2 moveDirection = Vector2.zero;
+
+    private float animTick = 0f;
+    private float animTickLimit = 0.06f;
 
     void Awake()
     {
@@ -61,6 +67,28 @@ public class Hostile : MonoBehaviour
 
         enemy.AddForce(Roamx * Vector2.right);
         enemy.AddForce(Roamy * Vector2.up);
+
+        // Changes character direction and 'animates'
+        if (moveDirection.x > 0)
+        {
+            owner.GetComponent<SpriteRenderer>().flipX = false;
+        }
+        else if (moveDirection.x < 0)
+        {
+            owner.GetComponent<SpriteRenderer>().flipX = true;
+        }
+
+        animTick += Time.deltaTime;
+        if (animTick > animTickLimit)
+        {
+            animTick = 0f;
+            owner.GetComponent<SpriteRenderer>().sprite = run[index++];
+        }
+
+        if (index > 3)
+        {
+            index = 0;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)

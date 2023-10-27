@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Spawner : MonoBehaviour
 {
+    public Text textKilled;
+    public Text textSpawner;
     public GameObject enemy;
     public float spawnRate = 2f;
     private float spawnTimer = 0f;
@@ -30,6 +33,7 @@ public class Spawner : MonoBehaviour
             }
             GameObject newEnemy = Instantiate(enemy, spawnPoint, Quaternion.identity);
         }
+        updateUI(enemiesKilled, enemiesLimit);
     }
 
     public static void updateKilled()
@@ -54,5 +58,12 @@ public class Spawner : MonoBehaviour
                 enemiesLimit += (enemiesKilled % 5 == 0) ? 1 : 0;
             }
         }
+        Debug.Log("Update");
+    }
+
+    private void updateUI(int enemiesKilled, int enemiesLimit)
+    {
+        textKilled.text = "Enemies Killed: " + enemiesKilled;
+        textSpawner.text = "Enemies On Map: " + enemiesLimit;
     }
 }
