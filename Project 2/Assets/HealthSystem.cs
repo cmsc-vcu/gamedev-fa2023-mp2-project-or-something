@@ -42,15 +42,15 @@ public class HealthSystem : MonoBehaviour
 
         if (this.health <= 0 && this.owner.CompareTag("Enemy"))
         {
-            if (UnityEngine.Random.Range(1, 25) <= 1 && killed < 25)
+            if (UnityEngine.Random.Range(1, 10) <= 1 && killed < 25)
             {
                 Instantiate(item, this.owner.GetComponent<Rigidbody2D>().position, Quaternion.identity);
             }
-            else if (UnityEngine.Random.Range(1, 50) <= 1 && killed < 50)
+            else if (UnityEngine.Random.Range(1, 40) <= 1 && killed < 50)
             {
                 Instantiate(item, this.owner.GetComponent<Rigidbody2D>().position, Quaternion.identity);
             }
-            else if (UnityEngine.Random.Range(1, 80) <= 1 && killed < 100)
+            else if (UnityEngine.Random.Range(1, 100) <= 1 && killed < 100)
             {
                 Instantiate(item, this.owner.GetComponent<Rigidbody2D>().position, Quaternion.identity);
             }
