@@ -15,8 +15,8 @@ public class Hostile : MonoBehaviour
     public int index = 0;
 
     private float MOVESPEED = 6;
-    private float ACCEL = 0.25f;
-    private float DECEL = 0.10f;
+    private float ACCEL = 1.5f;
+    private float DECEL = 1.5f;
     private Vector2 moveDirection = Vector2.zero;
 
     private float animTick = 0f;
@@ -33,7 +33,7 @@ public class Hostile : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         
         if (target.position.x - enemy.position.x > 0)
@@ -68,6 +68,8 @@ public class Hostile : MonoBehaviour
         enemy.AddForce(Roamx * Vector2.right);
         enemy.AddForce(Roamy * Vector2.up);
 
+        
+
         // Changes character direction and 'animates'
         if (moveDirection.x > 0)
         {
@@ -77,6 +79,7 @@ public class Hostile : MonoBehaviour
         {
             owner.GetComponent<SpriteRenderer>().flipX = true;
         }
+        owner.GetComponent<Transform>().rotation = Quaternion.identity;
 
         animTick += Time.deltaTime;
         if (animTick > animTickLimit)

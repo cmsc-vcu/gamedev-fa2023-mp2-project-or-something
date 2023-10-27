@@ -16,6 +16,7 @@ public class HealthSystem : MonoBehaviour
     private GameObject owner;
     public GameObject item;
     private int health;
+    private int killed = 0;
 
     // Timer
     private float immuneTimer = 1f;
@@ -30,6 +31,10 @@ public class HealthSystem : MonoBehaviour
 
     // Update is called once per frame
 
+    void Awake()
+    {
+        
+    }
     void Update()
     {
         immuneTimer += Time.deltaTime;
@@ -37,11 +42,23 @@ public class HealthSystem : MonoBehaviour
 
         if (this.health <= 0 && this.owner.CompareTag("Enemy"))
         {
-            Destroy(owner);
-            if (UnityEngine.Random.Range(1, 100) <= 3)
+            if (UnityEngine.Random.Range(1, 25) <= 1 && killed < 25)
             {
                 Instantiate(item, this.owner.GetComponent<Rigidbody2D>().position, Quaternion.identity);
             }
+            else if (UnityEngine.Random.Range(1, 50) <= 1 && killed < 50)
+            {
+                Instantiate(item, this.owner.GetComponent<Rigidbody2D>().position, Quaternion.identity);
+            }
+            else if (UnityEngine.Random.Range(1, 80) <= 1 && killed < 100)
+            {
+                Instantiate(item, this.owner.GetComponent<Rigidbody2D>().position, Quaternion.identity);
+            }
+            else if (UnityEngine.Random.Range(1, 250) <= 1)
+            {
+                Instantiate(item, this.owner.GetComponent<Rigidbody2D>().position, Quaternion.identity);
+            }
+            killed++;
             Destroy(this.owner);
             Spawner.updateKilled();
         }
@@ -49,7 +66,7 @@ public class HealthSystem : MonoBehaviour
         {
             string curr_scene = SceneManager.GetActiveScene().name;
             SceneManager.UnloadSceneAsync(curr_scene);
-            SceneManager.LoadScene("YouDiedScene");
+            SceneManager.LoadScene("Dead");
         }
 
     }
@@ -64,7 +81,7 @@ public class HealthSystem : MonoBehaviour
     {
         if (this.owner.CompareTag("Player")) 
         {
-            this.health += 30;
+            this.health += 25;
             textHealth.text = "Health: " + this.health;
         }
     }

@@ -12,6 +12,11 @@ public class Spawner : MonoBehaviour
     public static int enemiesLimit = 1;
     private Vector3 spawnPoint;
 
+    void Awake()
+    {
+        enemiesKilled = 0;
+        enemiesLimit = 1;
+    }
     void Update()
     {
         if (GameObject.FindGameObjectsWithTag("Enemy").Length < enemiesLimit)
@@ -39,7 +44,7 @@ public class Spawner : MonoBehaviour
     public static void updateKilled()
     {
         enemiesKilled++;
-        if (enemiesLimit < 250)
+        if (enemiesLimit < 1000)
         {
             if (enemiesLimit < 15)
             {

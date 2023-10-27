@@ -142,7 +142,7 @@ public class PlayerInput : MonoBehaviour
 
         // Timer Updates
         attackCooldown += Time.deltaTime;
-
+        owner.GetComponent<Transform>().rotation = Quaternion.identity;
         if (attackCooldown > .25f)
         {
             attackArea.SetActive(false);

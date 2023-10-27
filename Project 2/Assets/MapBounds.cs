@@ -12,19 +12,19 @@ public class MapBounds : MonoBehaviour
             Rigidbody2D player = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
             if (player.position.x > 39)
             {
-                player.position = new Vector2(38, player.position.y);
+                player.position = new Vector2(36, player.position.y);
             }
             else if (player.position.x < -39)
             {
-                player.position = new Vector2(-38, player.position.y);
+                player.position = new Vector2(-36, player.position.y);
             }
             if (player.position.y > 39)
             {
-                player.position = new Vector2(player.position.x, 38);
+                player.position = new Vector2(player.position.x, 36);
             }
-            else if (player.position.x < -39)
+            else if (player.position.y < -39)
             {
-                player.position = new Vector2(player.position.x, -38);
+                player.position = new Vector2(player.position.x, -36);
             }
         }
     }
